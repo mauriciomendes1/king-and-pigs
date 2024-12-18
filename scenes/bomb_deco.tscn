@@ -1,0 +1,138 @@
+[gd_scene load_steps=20 format=3 uid="uid://dnu84vxrr7ael"]
+
+[ext_resource type="Texture2D" uid="uid://dp5p17y8tyrpl" path="res://Sprites/09-Bomb/Bomb Off.png" id="1_chveg"]
+[ext_resource type="Script" path="res://scenes/bomb_deco.gd" id="1_m8hjd"]
+[ext_resource type="Texture2D" uid="uid://d4i2en0inxha3" path="res://Sprites/09-Bomb/Bomb On (52x56).png" id="2_afnrn"]
+[ext_resource type="Texture2D" uid="uid://b05swdrcxhgcd" path="res://Sprites/09-Bomb/Boooooom (52x56).png" id="3_lj8da"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_trjt0"]
+bounce = 0.11
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v7hey"]
+atlas = ExtResource("2_afnrn")
+region = Rect2(0, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bdu7"]
+atlas = ExtResource("2_afnrn")
+region = Rect2(52, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_441uf"]
+atlas = ExtResource("2_afnrn")
+region = Rect2(104, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_odh8b"]
+atlas = ExtResource("2_afnrn")
+region = Rect2(156, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gbsxq"]
+atlas = ExtResource("3_lj8da")
+region = Rect2(0, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g20kp"]
+atlas = ExtResource("3_lj8da")
+region = Rect2(52, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bfshs"]
+atlas = ExtResource("3_lj8da")
+region = Rect2(104, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i1407"]
+atlas = ExtResource("3_lj8da")
+region = Rect2(156, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_08v04"]
+atlas = ExtResource("3_lj8da")
+region = Rect2(208, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jnfud"]
+atlas = ExtResource("3_lj8da")
+region = Rect2(260, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pios1"]
+atlas = ExtResource("1_chveg")
+region = Rect2(0, 0, 52, 56)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fd0gy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v7hey")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3bdu7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_441uf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_odh8b")
+}],
+"loop": false,
+"name": &"active",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gbsxq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g20kp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bfshs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i1407")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_08v04")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jnfud")
+}],
+"loop": false,
+"name": &"boom",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pios1")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6aw6a"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_daq2o"]
+radius = 15.0
+
+[node name="bomb_deco" type="RigidBody2D" groups=["bomb_deco"]]
+physics_material_override = SubResource("PhysicsMaterial_trjt0")
+script = ExtResource("1_m8hjd")
+
+[node name="anim" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_fd0gy")
+animation = &"active"
+
+[node name="collision" type="CollisionShape2D" parent="."]
+position = Vector2(1, 5)
+shape = SubResource("CircleShape2D_6aw6a")
+
+[node name="explosion" type="Area2D" parent="."]
+
+[node name="collision" type="CollisionShape2D" parent="explosion"]
+position = Vector2(1, 5)
+shape = SubResource("CircleShape2D_daq2o")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="animation_finished" from="anim" to="." method="_on_anim_animation_finished"]
+[connection signal="body_entered" from="explosion" to="." method="_on_explosion_body_entered"]
+[connection signal="body_exited" from="explosion" to="." method="_on_explosion_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,140 @@
+[gd_scene load_steps=20 format=3 uid="uid://cml2ylqmultpj"]
+
+[ext_resource type="Texture2D" uid="uid://dp5p17y8tyrpl" path="res://Sprites/09-Bomb/Bomb Off.png" id="1_1wuea"]
+[ext_resource type="Script" path="res://scenes/bomb.gd" id="1_6ar07"]
+[ext_resource type="Texture2D" uid="uid://d4i2en0inxha3" path="res://Sprites/09-Bomb/Bomb On (52x56).png" id="2_vv1yq"]
+[ext_resource type="Texture2D" uid="uid://b05swdrcxhgcd" path="res://Sprites/09-Bomb/Boooooom (52x56).png" id="3_ewttr"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bbvwf"]
+bounce = 0.11
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ch184"]
+atlas = ExtResource("2_vv1yq")
+region = Rect2(0, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_88t8l"]
+atlas = ExtResource("2_vv1yq")
+region = Rect2(52, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5dp7n"]
+atlas = ExtResource("2_vv1yq")
+region = Rect2(104, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gub1"]
+atlas = ExtResource("2_vv1yq")
+region = Rect2(156, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kda8v"]
+atlas = ExtResource("3_ewttr")
+region = Rect2(0, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xmw0m"]
+atlas = ExtResource("3_ewttr")
+region = Rect2(52, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l88a8"]
+atlas = ExtResource("3_ewttr")
+region = Rect2(104, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k4ho2"]
+atlas = ExtResource("3_ewttr")
+region = Rect2(156, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pv5gi"]
+atlas = ExtResource("3_ewttr")
+region = Rect2(208, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_up1uu"]
+atlas = ExtResource("3_ewttr")
+region = Rect2(260, 0, 52, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ywik"]
+atlas = ExtResource("1_1wuea")
+region = Rect2(0, 0, 52, 56)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_61wpm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ch184")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_88t8l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5dp7n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gub1")
+}],
+"loop": false,
+"name": &"active",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kda8v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xmw0m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l88a8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k4ho2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pv5gi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_up1uu")
+}],
+"loop": false,
+"name": &"boom",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ywik")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8euns"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_iikm0"]
+radius = 15.0
+
+[node name="bomb" type="RigidBody2D" groups=["bomb"]]
+physics_material_override = SubResource("PhysicsMaterial_bbvwf")
+script = ExtResource("1_6ar07")
+
+[node name="anim" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_61wpm")
+animation = &"idle"
+
+[node name="collision" type="CollisionShape2D" parent="."]
+position = Vector2(1, 5)
+shape = SubResource("CircleShape2D_8euns")
+disabled = true
+
+[node name="explosion" type="Area2D" parent="."]
+
+[node name="collision" type="CollisionShape2D" parent="explosion"]
+position = Vector2(1, 5)
+shape = SubResource("CircleShape2D_iikm0")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="anim" to="." method="_on_anim_animation_finished"]
+[connection signal="body_entered" from="explosion" to="." method="_on_explosion_body_entered"]
+[connection signal="body_exited" from="explosion" to="." method="_on_explosion_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

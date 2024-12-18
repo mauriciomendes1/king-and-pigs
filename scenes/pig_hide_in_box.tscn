@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://cce51tb7v1qgw"]
+
+[ext_resource type="Script" path="res://scenes/pig_hide_in_box.gd" id="1_csovi"]
+[ext_resource type="Texture2D" uid="uid://0m4r3hedw1b8" path="res://Sprites/06-Pig Hide in the Box/Looking Out (26x20).png" id="1_n1rva"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw7mk"]
+atlas = ExtResource("1_n1rva")
+region = Rect2(0, 0, 26, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhjqj"]
+atlas = ExtResource("1_n1rva")
+region = Rect2(26, 0, 26, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ncb7r"]
+atlas = ExtResource("1_n1rva")
+region = Rect2(52, 0, 26, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_koyi7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aw7mk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhjqj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ncb7r")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 1.0
+}]
+
+[node name="pig_hide_in_box" type="Node2D"]
+script = ExtResource("1_csovi")
+
+[node name="anim" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_koyi7")
+animation = &"idle"

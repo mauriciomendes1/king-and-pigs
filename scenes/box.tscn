@@ -1,0 +1,53 @@
+[gd_scene load_steps=12 format=3 uid="uid://d2y0rj3ufpu63"]
+
+[ext_resource type="Script" path="res://scenes/box.gd" id="1_j5w5y"]
+[ext_resource type="Texture2D" uid="uid://cmg7wiai184kc" path="res://Sprites/08-Box/Idle.png" id="1_oxqft"]
+[ext_resource type="Texture2D" uid="uid://cdogl844lr242" path="res://Sprites/08-Box/Hit.png" id="2_2sd6s"]
+[ext_resource type="PackedScene" uid="uid://b8vx2ng73s2vk" path="res://scenes/piece_1.tscn" id="2_5mi31"]
+[ext_resource type="PackedScene" uid="uid://7brkfjml62im" path="res://scenes/piece_2.tscn" id="3_nblp0"]
+[ext_resource type="PackedScene" uid="uid://da2ufml3ymijq" path="res://scenes/piece_3.tscn" id="4_yw4h5"]
+[ext_resource type="PackedScene" uid="uid://bnguocn7v4gwo" path="res://scenes/piece_4.tscn" id="5_cfjt5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2013a"]
+atlas = ExtResource("2_2sd6s")
+region = Rect2(0, 0, 22, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s3k8q"]
+atlas = ExtResource("1_oxqft")
+region = Rect2(0, 0, 22, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p3aod"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2013a")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s3k8q")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6gnud"]
+size = Vector2(21, 16)
+
+[node name="box" type="RigidBody2D" groups=["box"]]
+script = ExtResource("1_j5w5y")
+pieces = Array[PackedScene]([ExtResource("2_5mi31"), ExtResource("3_nblp0"), ExtResource("4_yw4h5"), ExtResource("5_cfjt5")])
+
+[node name="anim" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_p3aod")
+animation = &"idle"
+
+[node name="collision" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_6gnud")
+
+[connection signal="animation_finished" from="anim" to="." method="_on_anim_animation_finished"]

@@ -1,0 +1,86 @@
+[gd_scene load_steps=13 format=3 uid="uid://bqtrqo3arb1b1"]
+
+[ext_resource type="Texture2D" uid="uid://bfri18ytqyvwh" path="res://Sprites/07-Pig With a Match/Match On (26x18).png" id="1_fb18y"]
+[ext_resource type="Script" path="res://scenes/enemy.gd" id="1_xjg2r"]
+[ext_resource type="Texture2D" uid="uid://c4cae2br6f60j" path="res://Sprites/03-Pig/Dead (34x28).png" id="2_a5rdb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5ah4"]
+atlas = ExtResource("2_a5rdb")
+region = Rect2(0, 10, 34, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kuv0g"]
+atlas = ExtResource("2_a5rdb")
+region = Rect2(34, 10, 34, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iww5y"]
+atlas = ExtResource("2_a5rdb")
+region = Rect2(68, 10, 34, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j20x1"]
+atlas = ExtResource("2_a5rdb")
+region = Rect2(102, 10, 34, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tgp3p"]
+atlas = ExtResource("1_fb18y")
+region = Rect2(0, 0, 26, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fvm2h"]
+atlas = ExtResource("1_fb18y")
+region = Rect2(26, 0, 26, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xlq0w"]
+atlas = ExtResource("1_fb18y")
+region = Rect2(52, 0, 26, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jfk18"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f5ah4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kuv0g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iww5y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j20x1")
+}],
+"loop": false,
+"name": &"die",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tgp3p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fvm2h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xlq0w")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rnydw"]
+size = Vector2(14, 15)
+
+[node name="enemy_with_fire" type="CharacterBody2D" groups=["enemies"]]
+texture_filter = 1
+script = ExtResource("1_xjg2r")
+
+[node name="anim" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, 1)
+scale = Vector2(0.755656, 0.755952)
+sprite_frames = SubResource("SpriteFrames_jfk18")
+animation = &"die"
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_rnydw")
+
+[connection signal="animation_finished" from="anim" to="." method="_on_anim_animation_finished"]

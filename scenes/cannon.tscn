@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bb2gnjmln6kuw"]
+
+[ext_resource type="Texture2D" uid="uid://dmg1642mqdnei" path="res://Sprites/10-Cannon/Idle.png" id="1_hvfno"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mbrig"]
+atlas = ExtResource("1_hvfno")
+region = Rect2(0, 0, 44, 28)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jsxbp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mbrig")
+}],
+"loop": false,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[node name="cannon" type="Node2D"]
+
+[node name="anim" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_jsxbp")
+animation = &"idle"
